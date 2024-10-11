@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import joblib
 
 # Load the saved model and vectorizer
@@ -7,10 +7,12 @@ tfidf_vectorizer = joblib.load('tfidf_vectorizer.pkl')
 
 app = Flask(__name__)
 
+# Serve the frontend at the root endpoint
 @app.route('/')
-def home():
-    return "Fake News Detection API"
+def index():
+    return render_template('index.html')
 
+# API to predict fake news
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
