@@ -34,6 +34,8 @@ To run this project locally, follow the steps below:
 ## Dataset
 
 Data Source: https://www.kaggle.com/datasets/ruchi798/source-based-news-classification
+
+
 The dataset used for this project contains two main columns:
 - `text`: The content of the news article.
 - `label`: The classification label indicating whether the news is "Fake" or "Real".
