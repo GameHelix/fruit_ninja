@@ -7,7 +7,8 @@ import json
 import re
 from typing import Dict, List, Optional
 from loguru import logger
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from scraper_job.config import GEMINI_API_KEY
 
@@ -30,21 +31,21 @@ class NewsSummarizer:
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables")
 
-        # Configure Gemini
-        genai.configure(api_key=api_key)
+        # Configure Gemini client (new SDK)
+        self.client = genai.Client(api_key=api_key)
 
-        # Use Gemini 2.5 Flash-Lite (free tier, 1000 requests/day)
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        # Use a generally available Gemini model
+        self.model_name = 'gemini-2.0-flash-001'
 
         # Configure generation settings
-        self.generation_config = {
-            'temperature': 0.3,  # Lower temperature for more focused summaries
-            'top_p': 0.8,
-            'top_k': 40,
-            'max_output_tokens': 2048,
-        }
+        self.generation_config = types.GenerateContentConfig(
+            temperature=0.3,  # Lower temperature for more focused summaries
+            top_p=0.8,
+            top_k=40,
+            max_output_tokens=2048,
+        )
 
-        logger.info("Initialized Gemini summarizer with model: gemini-2.0-flash-exp")
+        logger.info(f"Initialized Gemini summarizer with model: {self.model_name}")
 
     def create_summary_prompt(self, article: Dict) -> str:
         """
@@ -156,13 +157,14 @@ Important:
             # Generate summary
             logger.debug(f"Generating summary for article: {article.get('title', 'Unknown')[:50]}...")
 
-            response = self.model.generate_content(
-                prompt,
-                generation_config=self.generation_config
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=self.generation_config
             )
 
             # Parse response
-            if not response.text:
+            if not getattr(response, "text", None):
                 logger.error("Empty response from Gemini")
                 return None
 
@@ -173,8 +175,8 @@ Important:
                 return None
 
             # Add metadata
-            result['model_used'] = 'gemini-2.0-flash-exp'
-            result['model_version'] = '2.0-flash-exp'
+            result['model_used'] = self.model_name
+            result['model_version'] = self.model_name
 
             # Calculate confidence score (based on response quality)
             confidence = self.calculate_confidence(result)
@@ -299,7 +301,10 @@ Important:
         """
         try:
             test_prompt = "Say 'Hello' in JSON format: {\"message\": \"Hello\"}"
-            response = self.model.generate_content(test_prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=test_prompt
+            )
 
             if response.text:
                 logger.success("Gemini API connection test successful")

@@ -10,7 +10,7 @@ psycopg2-binary>=2.9.9
 sqlalchemy>=2.0.0
 
 # AI/ML
-google-generativeai>=0.3.0  # Gemini API
+google-genai>=0.3.0  # Gemini API (new SDK)
 
 # Utilities
 python-dotenv>=1.0.0
