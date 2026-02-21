@@ -23,11 +23,6 @@ pytz>=2023.3
 # Logging & Monitoring
 loguru>=0.7.2
 
-# Data Processing
-hashlib  # Built-in, for content hashing
-json  # Built-in
-uuid  # Built-in
-
 # HTTP Headers & User Agents
 fake-useragent>=1.4.0
 
@@ -37,6 +32,3 @@ pytest-asyncio>=0.21.0
 
 # Rate Limiting
 ratelimit>=2.2.1
-
-# Logging
-loguru
