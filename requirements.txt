@@ -37,3 +37,6 @@ pytest-asyncio>=0.21.0
 
 # Rate Limiting
 ratelimit>=2.2.1
+
+# Logging
+loguru
