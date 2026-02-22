@@ -143,10 +143,22 @@ class BaseScraper(ABC):
             logger.error(f"Failed to parse HTML for: {url}")
             return []
 
+        # DEBUG: Log HTML details for troubleshooting
+        logger.debug(f"HTML length: {len(response.text)} bytes")
+        logger.debug(f"HTML preview: {response.text[:500]}")
+
         # Extract articles using subclass implementation
         try:
             articles = self.parse_article_list(soup, page_number)
             logger.info(f"Found {len(articles)} articles on page {page_number}")
+
+            # DEBUG: If no articles found, log more details
+            if len(articles) == 0:
+                logger.warning(f"Parser returned 0 articles. HTML length: {len(response.text)}, URL: {url}")
+                # Count total links for debugging
+                all_links = soup.find_all('a', href=True)
+                logger.warning(f"Total <a> tags in HTML: {len(all_links)}")
+
             return articles
         except Exception as e:
             logger.error(f"Error parsing article list from {url}: {e}")
