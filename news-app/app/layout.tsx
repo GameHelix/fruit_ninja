@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Azerbaijan News | Latest Headlines',
-  description: 'Stay updated with the latest news from Azerbaijan - covering Sonxeber, APA, Report, Modern, and Axar news sources',
-  keywords: 'azerbaijan news, xəbərlər, news aggregator, sonxeber, apa, report, modern, axar',
+  title: 'birnews | Bir mənbə, bütün xəbərlər',
+  description: 'Azərbaycanın bütün xəbərləri bir yerdə - Sonxeber, APA, Report, Modern və Axar-dan ən son xəbərlər',
+  keywords: 'birnews, azerbaijan news, xəbərlər, news aggregator, bir mənbə, sonxeber, apa, report, modern, axar',
 }
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
                   </svg>
                   <span className="text-2xl font-bold text-gray-900">
-                    AZ <span className="text-primary-600">News</span>
+                    bir<span className="text-primary-600">news</span>
                   </span>
                 </a>
 
@@ -48,9 +48,9 @@ export default function RootLayout({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                  <h3 className="text-white font-bold text-lg mb-4">AZ News</h3>
+                  <h3 className="text-white font-bold text-lg mb-4">birnews</h3>
                   <p className="text-sm">
-                    Azərbaycanın aparıcı xəbər mənbələrindən ən son xəbərlər
+                    Bir mənbə, bütün xəbərlər • Azərbaycanın aparıcı xəbər portallarından ən son xəbərlər
                   </p>
                 </div>
 
@@ -75,7 +75,7 @@ export default function RootLayout({
               </div>
 
               <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm">
-                <p>&copy; {new Date().getFullYear()} AZ News. Bütün hüquqlar qorunur.</p>
+                <p>&copy; {new Date().getFullYear()} birnews. Bütün hüquqlar qorunur.</p>
               </div>
             </div>
           </footer>

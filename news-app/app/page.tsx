@@ -1,15 +1,27 @@
 import { getArticles, getNewsSources, getArticleCount } from '@/lib/db';
 import ArticleCard from '@/components/ArticleCard';
+import Pagination from '@/components/Pagination';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 300; // Revalidate every 5 minutes
 
-export default async function Home() {
+const ARTICLES_PER_PAGE = 24;
+
+interface HomeProps {
+  searchParams: { page?: string };
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const currentPage = parseInt(searchParams.page || '1', 10);
+  const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
+
   const [articles, sources, totalCount] = await Promise.all([
-    getArticles(24), // Get latest 24 articles
+    getArticles(ARTICLES_PER_PAGE, offset),
     getNewsSources(),
     getArticleCount(),
   ]);
+
+  const totalPages = Math.ceil(totalCount / ARTICLES_PER_PAGE);
 
   return (
     <div className="min-h-screen">
@@ -60,11 +72,15 @@ export default async function Home() {
             <p className="text-gray-500">Xəbərlər tezliklə yenilənəcək</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </div>
+
+            <Pagination currentPage={currentPage} totalPages={totalPages} />
+          </>
         )}
       </section>
 

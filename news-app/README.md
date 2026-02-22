@@ -1,6 +1,8 @@
-# Azerbaijan News Aggregator - Frontend
+# birnews - Bir mənbə, bütün xəbərlər
 
 Beautiful, responsive Next.js TypeScript app for displaying aggregated news from Azerbaijan's top news sources.
+
+**birnews** means "one source" in Azerbaijani - one place for all your Azerbaijan news.
 
 ## Features
 
@@ -10,6 +12,8 @@ Beautiful, responsive Next.js TypeScript app for displaying aggregated news from
 - 🎯 TypeScript for type safety
 - 📰 Real-time news from 5 active sources
 - 🔄 Auto-revalidation every 5 minutes
+- 📄 Smart pagination (24 articles per page)
+- 🚀 Fast page loads with optimized queries
 
 ## Tech Stack
 
