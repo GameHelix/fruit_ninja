@@ -39,7 +39,7 @@ export default async function Home({ searchParams }: HomeProps) {
               {sources.map((source) => (
                 <span
                   key={source.id}
-                  className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium hover:bg-white/30 transition-colors cursor-pointer"
+                  className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium"
                 >
                   {source.name}
                 </span>
