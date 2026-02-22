@@ -169,8 +169,7 @@ def show_stats():
         logger.info(f"  {source_stat['source_name']}:")
         logger.info(f"    - Total articles: {source_stat['total_articles']}")
         logger.info(f"    - Processed: {source_stat['processed_articles']}")
-        logger.info(f"    - Summarized: {source_stat['summarized_articles']}")
-        if source_stat['last_scrape_time']:
+        if source_stat.get('last_scrape_time'):
             logger.info(f"    - Last scrape: {source_stat['last_scrape_time']}")
 
     logger.info(f"\nJob Statistics:")

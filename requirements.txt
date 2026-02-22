@@ -9,9 +9,6 @@ playwright>=1.40.0
 psycopg2-binary>=2.9.9
 sqlalchemy>=2.0.0
 
-# AI/ML
-google-genai>=0.3.0  # Gemini API (new SDK)
-
 # Utilities
 python-dotenv>=1.0.0
 urllib3>=2.1.0

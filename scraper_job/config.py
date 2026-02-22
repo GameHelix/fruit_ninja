@@ -15,9 +15,6 @@ load_dotenv(dotenv_path=env_path)
 # Support both DATABASE and DATABASE_URL for flexibility in environments.
 DATABASE_URL = os.getenv('DATABASE') or os.getenv('DATABASE_URL') or ''
 
-# Gemini API Configuration
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-
 # Scraper Configuration
 USER_AGENTS = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',

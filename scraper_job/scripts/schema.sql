@@ -222,7 +222,6 @@ SELECT
     ns.name as source_name,
     COUNT(a.id) as total_articles,
     COUNT(CASE WHEN a.is_processed THEN 1 END) as processed_articles,
-    COUNT(CASE WHEN a.is_summarized THEN 1 END) as summarized_articles,
     MAX(a.published_at) as latest_article_date,
     MAX(a.scraped_at) as last_scrape_time
 FROM news_sources ns

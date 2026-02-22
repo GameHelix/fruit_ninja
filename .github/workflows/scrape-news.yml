@@ -45,7 +45,6 @@ jobs:
         env:
           DATABASE: ${{ secrets.DATABASE }}
           DATABASE_URL: ${{ secrets.DATABASE }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python -m scraper_job.run_scraper run-all \
             --pages ${{ github.event.inputs.max_pages || '3' }} \
