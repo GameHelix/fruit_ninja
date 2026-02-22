@@ -86,9 +86,12 @@ def fetch_page_with_playwright(
                 'User-Agent': get_random_user_agent()
             })
 
-            # Navigate and wait for network to be idle
+            # Navigate and wait for DOM to load (networkidle often times out on news sites with ads/analytics)
             logger.debug(f"Fetching with Playwright: {url}")
-            page.goto(url, timeout=timeout * 1000, wait_until='networkidle')
+            page.goto(url, timeout=timeout * 1000, wait_until='domcontentloaded')
+
+            # Wait a bit for dynamic content to load
+            page.wait_for_timeout(2000)  # 2 seconds for JS to execute
 
             # Get rendered HTML
             content = page.content()
