@@ -8,17 +8,18 @@ export const revalidate = 300; // Revalidate every 5 minutes
 const ARTICLES_PER_PAGE = 24;
 
 interface HomeProps {
-  searchParams: { page?: string };
+  searchParams: { page?: string; source?: string };
 }
 
 export default async function Home({ searchParams }: HomeProps) {
   const currentPage = parseInt(searchParams.page || '1', 10);
+  const sourceId = searchParams.source ? parseInt(searchParams.source, 10) : undefined;
   const offset = (currentPage - 1) * ARTICLES_PER_PAGE;
 
   const [articles, sources, totalCount] = await Promise.all([
-    getArticles(ARTICLES_PER_PAGE, offset),
+    getArticles(ARTICLES_PER_PAGE, offset, sourceId),
     getNewsSources(),
-    getArticleCount(),
+    getArticleCount(sourceId),
   ]);
 
   const totalPages = Math.ceil(totalCount / ARTICLES_PER_PAGE);
@@ -36,13 +37,31 @@ export default async function Home({ searchParams }: HomeProps) {
               Ən son xəbərlər bir yerdə • {totalCount} xəbər
             </p>
             <div className="flex flex-wrap justify-center gap-2">
+              {/* All filter */}
+              <a
+                href="/"
+                className={`inline-block px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  !sourceId
+                    ? 'bg-white text-primary-600 shadow-lg'
+                    : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 cursor-pointer'
+                }`}
+              >
+                Hamısı
+              </a>
+
+              {/* Source filters */}
               {sources.map((source) => (
-                <span
+                <a
                   key={source.id}
-                  className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium"
+                  href={`/?source=${source.id}`}
+                  className={`inline-block px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    sourceId === source.id
+                      ? 'bg-white text-primary-600 shadow-lg'
+                      : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 cursor-pointer'
+                  }`}
                 >
                   {source.name}
-                </span>
+                </a>
               ))}
             </div>
           </div>
@@ -79,7 +98,11 @@ export default async function Home({ searchParams }: HomeProps) {
               ))}
             </div>
 
-            <Pagination currentPage={currentPage} totalPages={totalPages} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseUrl={sourceId ? `/?source=${sourceId}` : '/'}
+            />
           </>
         )}
       </section>
