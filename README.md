@@ -4,6 +4,8 @@ Automated news scraper for Azerbaijani news websites. Scrapes articles from mult
 
 **Automated scraping**: 3 times daily at 09:00, 13:00, and 18:00 UTC via GitHub Actions.
 
+**Snapshot-based storage**: Each scrape deletes old articles before inserting new ones, maintaining only the latest snapshot. This prevents database growth and ensures zero storage costs. Historical data is not preserved - only the current state of all news sources.
+
 ## Project Structure
 
 ```
@@ -223,13 +225,15 @@ Logs are stored in `logs/` directory:
 ### Current Features
 - ✅ Multi-source web scraping (7 news sources)
 - ✅ PostgreSQL database storage
+- ✅ **Zero-cost snapshot storage** - Only keeps latest news, deletes old data automatically
 - ✅ Deduplication by content hash
-- ✅ Job tracking and error logging
+- ✅ Job tracking and error logging (auto-cleanup after 7 days)
 - ✅ Configurable scraping limits
 - ✅ Respectful rate limiting
 - ✅ Comprehensive logging
 - ✅ **GitHub Actions automation (3x daily)**
 - ✅ **Automated workflows with scheduled runs**
+- ✅ **Can run forever without storage costs**
 
 ### Upcoming Features
 - ⏳ AJAX/API-based scrapers (requires API endpoint detection)
@@ -295,31 +299,57 @@ pytest
 
 ## Architecture
 
-### Scraping Flow
+### Scraping Flow (Snapshot-Based)
 
 ```
 1. run_scraper.py
    ├─> Initialize scraper (BaseScraper subclass)
+   ├─> DELETE old articles for this source (keep only latest)
    ├─> Create scrape_job in database
    ├─> For each page:
    │   ├─> Fetch listing page
    │   ├─> Parse article links (parse_article_list)
    │   ├─> For each article:
-   │   │   ├─> Check if exists (deduplication)
    │   │   ├─> Fetch detail page (optional)
    │   │   ├─> Parse content (parse_article_detail)
    │   │   └─> Insert into database
    │   └─> Rate limiting delay
-   └─> Update scrape_job with results
+   ├─> Update scrape_job with results
+   ├─> DELETE scrape_jobs older than 7 days
+   ├─> DELETE scrape_errors older than 7 days
+   └─> Return statistics
 ```
 
 ### Database Flow
 
 ```
-Articles
-   ├─> is_processed = FALSE (initial scrape - metadata only)
-   └─> is_processed = TRUE  (full content scraped)
+Articles (Snapshot-based)
+   ├─> Before scrape: DELETE all articles for source
+   ├─> During scrape: INSERT new articles
+   └─> After scrape: Only latest snapshot remains
+
+Scrape Jobs & Errors (Rolling cleanup)
+   ├─> Keep last 7 days of history
+   └─> Auto-delete older records to prevent growth
 ```
+
+### Zero-Cost Design
+
+The scraper is designed to run indefinitely without storage costs:
+
+1. **Snapshot Storage**: Each scrape deletes old articles before inserting new ones
+   - Database only contains current state, not historical data
+   - Total storage = Sum of latest articles from all sources
+   - Typical size: ~1000-2000 articles (few MB)
+
+2. **Rolling History**: Job logs and errors auto-cleanup after 7 days
+   - Keeps recent debugging info
+   - Prevents unlimited growth
+
+3. **Cost Implications**:
+   - Storage: Fixed size (latest snapshot only)
+   - Can run 3x daily forever on free tier
+   - Trade-off: No historical data or analytics
 
 ## Configuration
 

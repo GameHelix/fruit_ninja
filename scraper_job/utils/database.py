@@ -271,6 +271,78 @@ class DatabaseManager:
                 return category_id
 
 
+    def delete_old_articles(self, source_id: int) -> int:
+        """
+        Delete all articles for a specific source
+        This is called before inserting new articles to keep only the latest snapshot
+
+        Args:
+            source_id: ID of the news source
+
+        Returns:
+            Number of articles deleted
+        """
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "DELETE FROM articles WHERE source_id = %s",
+                    (source_id,)
+                )
+                deleted_count = cur.rowcount
+                conn.commit()
+                logger.info(f"Deleted {deleted_count} old articles for source {source_id}")
+                return deleted_count
+
+    def cleanup_old_jobs(self, days_to_keep: int = 7) -> int:
+        """
+        Delete scrape jobs older than specified days
+        Keeps only recent job history to prevent table growth
+
+        Args:
+            days_to_keep: Number of days to keep (default: 7)
+
+        Returns:
+            Number of jobs deleted
+        """
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM scrape_jobs
+                    WHERE started_at < NOW() - INTERVAL '%s days'
+                    """,
+                    (days_to_keep,)
+                )
+                deleted_count = cur.rowcount
+                conn.commit()
+                logger.info(f"Deleted {deleted_count} old scrape jobs (older than {days_to_keep} days)")
+                return deleted_count
+
+    def cleanup_old_errors(self, days_to_keep: int = 7) -> int:
+        """
+        Delete scrape errors older than specified days
+        Keeps only recent error history to prevent table growth
+
+        Args:
+            days_to_keep: Number of days to keep (default: 7)
+
+        Returns:
+            Number of errors deleted
+        """
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    DELETE FROM scrape_errors
+                    WHERE created_at < NOW() - INTERVAL '%s days'
+                    """,
+                    (days_to_keep,)
+                )
+                deleted_count = cur.rowcount
+                conn.commit()
+                logger.info(f"Deleted {deleted_count} old scrape errors (older than {days_to_keep} days)")
+                return deleted_count
+
     def get_stats(self) -> Dict:
         """Get database statistics"""
         with self.get_connection() as conn:

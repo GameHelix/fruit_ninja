@@ -88,6 +88,7 @@ def run_scraper(
 
         logger.success(f"Scraper completed successfully!")
         logger.info(f"Statistics:")
+        logger.info(f"  - Old articles deleted: {stats.get('articles_deleted', 0)}")
         logger.info(f"  - Pages scraped: {stats['pages_scraped']}")
         logger.info(f"  - Articles found: {stats['articles_found']}")
         logger.info(f"  - New articles: {stats['articles_new']}")

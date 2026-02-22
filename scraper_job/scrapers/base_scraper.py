@@ -204,6 +204,11 @@ class BaseScraper(ABC):
         logger.info(f"Starting scrape job for {self.source_name}")
         logger.info(f"Max pages: {max_pages}, Scrape details: {scrape_details}")
 
+        # Delete old articles for this source to keep only latest snapshot
+        logger.info(f"Cleaning up old articles for {self.source_name}")
+        deleted_count = self.db.delete_old_articles(self.source_id)
+        logger.info(f"Deleted {deleted_count} old articles, starting fresh scrape")
+
         # Create scrape job in database
         job_id = self.db.create_scrape_job(
             source_id=self.source_id,
@@ -217,7 +222,8 @@ class BaseScraper(ABC):
             'articles_new': 0,
             'articles_updated': 0,
             'articles_failed': 0,
-            'pages_scraped': 0
+            'pages_scraped': 0,
+            'articles_deleted': deleted_count
         }
 
         try:
@@ -274,6 +280,11 @@ class BaseScraper(ABC):
                 articles_updated=stats['articles_updated'],
                 articles_failed=stats['articles_failed']
             )
+
+            # Cleanup old job history and errors to prevent table growth
+            logger.info("Cleaning up old job history and errors")
+            self.db.cleanup_old_jobs(days_to_keep=7)
+            self.db.cleanup_old_errors(days_to_keep=7)
 
             logger.info(f"Scrape job completed: {stats}")
             return stats
