@@ -161,18 +161,37 @@ class MetbuatScraper(BaseScraper):
                     content_parts = [extract_text(p) for p in paragraphs if len(extract_text(p)) > 20]
                     content = '\n\n'.join(content_parts)
 
-            # Find publication date - Metbuat uses format "12:51 21 Fevral 2026"
+            # Find publication date - Metbuat uses multiple formats
             published_at = None
-            date_pattern = re.compile(
+
+            # Try format: "12:51 21 Fevral 2026" (time first)
+            date_pattern1 = re.compile(
                 r'(\d{1,2}:\d{2})\s+(\d+\s+(?:Yanvar|Fevral|Mart|Aprel|May|İyun|İyul|Avqust|Sentyabr|Oktyabr|Noyabr|Dekabr)\s+\d{4})',
                 re.IGNORECASE
             )
-            date_text = soup.find(text=date_pattern)
-            if date_text:
-                match = date_pattern.search(date_text)
+            # Try format: "21 Fevral 2026 12:51" (time last)
+            date_pattern2 = re.compile(
+                r'(\d+\s+(?:Yanvar|Fevral|Mart|Aprel|May|İyun|İyul|Avqust|Sentyabr|Oktyabr|Noyabr|Dekabr)\s+\d{4})\s+(\d{1,2}:\d{2})',
+                re.IGNORECASE
+            )
+
+            # Search in all text content
+            all_text = soup.get_text()
+
+            # Try pattern 1: time first
+            match = date_pattern1.search(all_text)
+            if match:
+                time_part = match.group(1)  # "12:51"
+                date_part = match.group(2)  # "21 Fevral 2026"
+                full_date_str = f"{date_part} {time_part}"
+                published_at = parse_azerbaijani_date(full_date_str)
+
+            # Try pattern 2: time last
+            if not published_at:
+                match = date_pattern2.search(all_text)
                 if match:
-                    time_part = match.group(1)  # "12:51"
-                    date_part = match.group(2)  # "21 Fevral 2026"
+                    date_part = match.group(1)  # "21 Fevral 2026"
+                    time_part = match.group(2)  # "12:51"
                     full_date_str = f"{date_part} {time_part}"
                     published_at = parse_azerbaijani_date(full_date_str)
 
