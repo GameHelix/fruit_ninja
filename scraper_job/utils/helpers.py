@@ -162,16 +162,21 @@ def parse_azerbaijani_date(date_string: str) -> Optional[datetime]:
         "21 Fevral 2026 12:06" -> datetime
         "21.02.2026 [19:22]" -> datetime
     """
-    # Month mapping
+    # Month mapping with variations for Turkish/Azerbaijani characters
     months_az = {
         'yanvar': 1, 'fevral': 2, 'mart': 3, 'aprel': 4,
-        'may': 5, 'iyun': 6, 'iyul': 7, 'avqust': 8,
+        'may': 5, 'mayıs': 5,
+        'iyun': 6, 'i̇yun': 6,  # dotted i variations
+        'iyul': 7, 'i̇yul': 7,  # dotted i variations
+        'avqust': 8, 'ağustos': 8,
         'sentyabr': 9, 'oktyabr': 10, 'noyabr': 11, 'dekabr': 12
     }
 
     try:
         # Clean the string
         date_string = date_string.strip().lower()
+        # Normalize dotted i character
+        date_string = date_string.replace('İ', 'i').replace('ı', 'i')
 
         # Pattern 1: "21 fevral 2026" or "21 Fevral 2026 12:06"
         for month_name, month_num in months_az.items():
