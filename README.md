@@ -37,12 +37,12 @@ Currently implemented scrapers:
 4. **APA.az** ✅ (Azerbaijan Press Agency)
 5. **Report.az** ✅
 6. **Modern.az** ✅
+7. **Axar.az** ✅ (static content only)
 
-Planned implementations:
-7. Axar.az (requires infinite scroll handling)
-8. News.milli.az (requires AJAX handling)
-9. Xezerxeber.az (requires infinite scroll handling)
-10. Oxu.az (requires anti-scraping bypass)
+Unable to implement (require advanced techniques):
+8. News.milli.az (requires AJAX/API integration)
+9. Xezerxeber.az (requires infinite scroll/Selenium)
+10. Oxu.az (requires anti-scraping bypass - returns 403)
 
 ## Setup
 
@@ -221,7 +221,7 @@ Logs are stored in `logs/` directory:
 ## Features
 
 ### Current Features
-- ✅ Multi-source web scraping (6 news sources)
+- ✅ Multi-source web scraping (7 news sources)
 - ✅ PostgreSQL database storage
 - ✅ Deduplication by content hash
 - ✅ Job tracking and error logging
@@ -232,7 +232,8 @@ Logs are stored in `logs/` directory:
 - ✅ **Automated workflows with scheduled runs**
 
 ### Upcoming Features
-- ⏳ Additional news sources (4 more planned)
+- ⏳ AJAX/API-based scrapers (requires API endpoint detection)
+- ⏳ Dynamic content scraping (requires Selenium/Playwright)
 - ⏳ Next.js frontend
 - ⏳ Vercel deployment
 - ⏳ REST API for article access

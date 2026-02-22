@@ -187,19 +187,32 @@ def parse_azerbaijani_date(date_string: str) -> Optional[datetime]:
         # Normalize dotted i character
         date_string = date_string.replace('İ', 'i').replace('ı', 'i')
 
-        # Pattern 1: "21 fevral 2026" or "21 Fevral 2026 12:06"
+        # Pattern 1: "21 fevral 2026" or "21 Fevral 2026 12:06" or "21 fevral 18:26"
         for month_name, month_num in months_az.items():
             if month_name in date_string:
                 parts = date_string.split()
                 day = int(parts[0])
-                year = int(parts[2])
 
-                # Check if time is present
-                if len(parts) >= 4:
-                    time_str = parts[3]
-                    hour, minute = map(int, time_str.split(':'))
-                    return datetime(year, month_num, day, hour, minute)
+                # Check if parts[2] is a year (4 digits) or time (contains colon)
+                if len(parts) >= 3:
+                    if ':' in parts[2]:
+                        # Format: "21 fevral 18:26" (no year, time is parts[2])
+                        time_str = parts[2]
+                        hour, minute = map(int, time_str.split(':'))
+                        year = datetime.now().year
+                        return datetime(year, month_num, day, hour, minute)
+                    else:
+                        # Format: "21 fevral 2026" or "21 fevral 2026 18:26"
+                        year = int(parts[2])
+                        if len(parts) >= 4:
+                            time_str = parts[3]
+                            hour, minute = map(int, time_str.split(':'))
+                            return datetime(year, month_num, day, hour, minute)
+                        else:
+                            return datetime(year, month_num, day)
                 else:
+                    # Only "day month" - assume current year
+                    year = datetime.now().year
                     return datetime(year, month_num, day)
 
         # Pattern 2: "21.02.2026 [19:22]" or "21.02.2026"
