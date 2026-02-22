@@ -12,6 +12,7 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [useOptimization, setUseOptimization] = useState(true);
 
   const publishedDate = article.published_at
     ? formatDistanceToNow(new Date(article.published_at), { addSuffix: true, locale: az })
@@ -23,16 +24,27 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         {article.image_url && (
           <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-200">
             {!imageError ? (
-              <Image
-                src={article.image_url}
-                alt={article.title}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                quality={85}
-                priority={false}
-                onError={() => setImageError(true)}
-              />
+              useOptimization ? (
+                <Image
+                  src={article.image_url}
+                  alt={article.title}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  quality={85}
+                  priority={false}
+                  onError={() => setUseOptimization(false)}
+                  unoptimized={false}
+                />
+              ) : (
+                <img
+                  src={article.image_url}
+                  alt={article.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  onError={() => setImageError(true)}
+                />
+              )
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-100">
                 <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
