@@ -257,7 +257,6 @@ pip install -r requirements.txt
 ### 2. Configure Environment
 
 ```env
-DATABASE=postgresql://user:password@host/database
 DATABASE_URL=postgresql://user:password@host/database
 ```
 
@@ -273,7 +272,7 @@ Add one repository secret:
 
 | Secret | Value |
 |--------|-------|
-| `DATABASE` | Neon PostgreSQL connection string |
+| `DATABASE_URL` | Neon PostgreSQL connection string |
 
 ---
 

@@ -6,7 +6,7 @@
 export DATABASE_URL="your_database_url_from_env_file"
 
 # Or load from .env
-export $(cat .env | grep DATABASE | xargs)
+export $(cat .env | grep DATABASE_URL | xargs)
 ```
 
 ## Quick Connect
@@ -139,7 +139,7 @@ from dotenv import load_dotenv
 
 # Load from .env file
 load_dotenv()
-database_url = os.getenv('DATABASE')
+database_url = os.getenv('DATABASE_URL')
 
 conn = psycopg2.connect(database_url)
 
@@ -163,7 +163,7 @@ from dotenv import load_dotenv
 
 # Load from .env file
 load_dotenv()
-database_url = os.getenv('DATABASE')
+database_url = os.getenv('DATABASE_URL')
 
 engine = create_engine(
     database_url,

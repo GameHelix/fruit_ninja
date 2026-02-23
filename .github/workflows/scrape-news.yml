@@ -48,8 +48,7 @@ jobs:
 
       - name: Run scraper for all sources
         env:
-          DATABASE: ${{ secrets.DATABASE }}
-          DATABASE_URL: ${{ secrets.DATABASE }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           USE_PLAYWRIGHT: 'true'
         run: |
           python -m scraper_job.run_scraper run-all \
@@ -60,8 +59,7 @@ jobs:
       - name: Display statistics
         if: always()
         env:
-          DATABASE: ${{ secrets.DATABASE }}
-          DATABASE_URL: ${{ secrets.DATABASE }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           python -m scraper_job.run_scraper stats
 
