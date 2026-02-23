@@ -153,7 +153,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Xəbər Mənbələri
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {sources.map((source) => (
               <a
                 key={source.id}

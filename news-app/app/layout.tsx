@@ -3,8 +3,8 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'birnews | Bir mənbə, bütün xəbərlər',
-  description: 'Azərbaycanın bütün xəbərləri bir yerdə - Sonxeber, APA, Report, Modern və Axar-dan ən son xəbərlər',
-  keywords: 'birnews, azerbaijan news, xəbərlər, news aggregator, bir mənbə, sonxeber, apa, report, modern, axar',
+  description: 'Azərbaycanın bütün xəbərləri bir yerdə - Sonxeber, APA, Report, Modern, Axar, Banker, Fed, Marja, Oxu, Qafqazinfo və Trend-dən ən son xəbərlər',
+  keywords: 'birnews, azerbaijan news, xəbərlər, news aggregator, bir mənbə, sonxeber, apa, report, modern, axar, banker, fed, marja, oxu, qafqazinfo, trend',
 }
 
 export default function RootLayout({
@@ -56,12 +56,18 @@ export default function RootLayout({
 
                 <div>
                   <h3 className="text-white font-bold text-lg mb-4">Mənbələr</h3>
-                  <ul className="space-y-2 text-sm">
+                  <ul className="space-y-2 text-sm columns-2">
                     <li><a href="https://sonxeber.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Sonxeber.az</a></li>
                     <li><a href="https://apa.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">APA.az</a></li>
                     <li><a href="https://report.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Report.az</a></li>
                     <li><a href="https://modern.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Modern.az</a></li>
                     <li><a href="https://axar.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Axar.az</a></li>
+                    <li><a href="https://banker.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Banker.az</a></li>
+                    <li><a href="https://fed.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Fed.az</a></li>
+                    <li><a href="https://marja.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Marja.az</a></li>
+                    <li><a href="https://oxu.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Oxu.az</a></li>
+                    <li><a href="https://qafqazinfo.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Qafqazinfo.az</a></li>
+                    <li><a href="https://az.trend.az" target="_blank" rel="noopener" className="hover:text-white transition-colors">Trend.az</a></li>
                   </ul>
                 </div>
 
