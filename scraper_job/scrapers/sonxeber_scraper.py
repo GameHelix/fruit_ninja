@@ -105,20 +105,20 @@ class SonxeberScraper(BaseScraper):
                 date_elem = None
                 published_at = None
                 if container:
-                    # Look for date in various possible formats
-                    date_candidates = container.find_all(
-                        text=re.compile(
-                            r'\d+\s+(yanvar|fevral|mart|aprel|may|iyun|iyul|avqust|sentyabr|oktyabr|noyabr|dekabr)',
-                            re.IGNORECASE
-                        )
+                    date_re = re.compile(
+                        r'\d+\s+(?:yanvar|fevral|mart|aprel|may|iyun|iyul|avqust|sentyabr|oktyabr|noyabr|dekabr)'
+                        r'(?:\s+\d{4})?(?:\s+\d{1,2}:\d{2})?',
+                        re.IGNORECASE
                     )
-                    if date_candidates:
-                        date_str = date_candidates[0].strip()
-                        # Add current year if not present
-                        if len(date_str.split()) == 2:
-                            from datetime import datetime
-                            date_str = f"{date_str} {datetime.now().year}"
-                        published_at = parse_azerbaijani_date(date_str)
+                    for text_node in container.find_all(text=date_re):
+                        match = date_re.search(text_node)
+                        if match:
+                            date_str = match.group(0).strip()
+                            if len(date_str.split()) == 2:
+                                from datetime import datetime
+                                date_str = f"{date_str} {datetime.now().year}"
+                            published_at = parse_azerbaijani_date(date_str)
+                            break
 
                 article = {
                     'source_article_id': article_id,
