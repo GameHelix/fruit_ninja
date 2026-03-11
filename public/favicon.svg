@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0040"/>
+      <stop offset="100%" stop-color="#04040f"/>
+    </radialGradient>
+    <radialGradient id="fruit" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </radialGradient>
+    <radialGradient id="inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fca5a5"/>
+      <stop offset="100%" stop-color="#f87171"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg)" stroke="#a78bfa" stroke-width="1.5" opacity="0.8"/>
+
+  <!-- Watermelon left half -->
+  <path d="M 22 32 A 12 12 0 0 1 34 20 L 34 32 Z" fill="url(#inner)" filter="url(#glow)"/>
+  <!-- Watermelon right half -->
+  <path d="M 34 20 A 12 12 0 0 1 46 32 L 34 32 Z" fill="url(#fruit)" filter="url(#glow)"/>
+
+  <!-- Neon slice line -->
+  <line x1="12" y1="20" x2="52" y2="44" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.9" filter="url(#glow)"/>
+
+  <!-- Seeds on inner half -->
+  <ellipse cx="26" cy="28" rx="1.5" ry="2" fill="#374151" opacity="0.7" transform="rotate(-15 26 28)"/>
+  <ellipse cx="30" cy="30" rx="1.5" ry="2" fill="#374151" opacity="0.7" transform="rotate(-10 30 30)"/>
+
+  <!-- Outer green rind -->
+  <path d="M 22 32 A 12 12 0 0 1 46 32" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round"/>
+</svg>
