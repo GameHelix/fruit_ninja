@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* ── Prevent any scroll on the game page ─────────────────────────────────── */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background: #04040f;
+  font-family: var(--font-geist-sans, "Inter", system-ui, sans-serif);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* ── Neon text utility ────────────────────────────────────────────────────── */
+.neon-text {
+  text-shadow:
+    0 0 8px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+/* ── Canvas cursor: crosshair blade ──────────────────────────────────────── */
+canvas {
+  cursor: crosshair;
+}
