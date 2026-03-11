@@ -156,7 +156,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm divide-y divide-gray-100 px-3">
               {articles.map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}
